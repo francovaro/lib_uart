@@ -12,7 +12,7 @@ static void USART2_NVIC_Config(void);
 /**
  *
  */
-void UART_fv_config(uint8_t irqEnabled)
+void UART_lib_config(uint8_t irqEnabled)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
 	USART_InitTypeDef USART_InitStructure;
@@ -67,7 +67,7 @@ void UART_fv_config(uint8_t irqEnabled)
 /**
  *
  */
-void UART_fv_SendData(const char * strToSend, uint16_t byteToSend)
+void UART_lib_SendData(const char * strToSend, uint16_t byteToSend)
 {
 	uint16_t count;
 
