@@ -17,9 +17,18 @@ volatile uint8_t usart_rxBuffer[USART_MAX_BUFFER];
 volatile FlagStatus usart_serialReceived;
 volatile uint16_t usart_nrOfByte;
 
-extern void UART_lib_config(uint8_t irqEnabled);
-extern void UART_lib_SendData(const char * strToSend, uint16_t byteToSend);
+typedef enum
+{
+	e_UART_1,
+	e_UART_2,
+	e_UART_3,
+	e_UART_4,
+	e_UART_5,
+	e_UART_None
+}t_UART_lib_;
 
-int uart_putc(int c);
+extern void UART_lib_config(t_UART_lib_ uart_to_config,uint8_t irqEnabled);
+extern void UART_lib_sendData(const char * strToSend, uint16_t byteToSend);
+extern int UART_lib_putc(int c);
 
 #endif /* _LIB_UART_H_ */

@@ -11,8 +11,10 @@ static void USART2_NVIC_Config(void);
 
 /**
  *
+ * @param uart_to_config
+ * @param irqEnabled
  */
-void UART_lib_config(uint8_t irqEnabled)
+void UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
 	USART_InitTypeDef USART_InitStructure;
@@ -67,7 +69,7 @@ void UART_lib_config(uint8_t irqEnabled)
 /**
  *
  */
-void UART_lib_SendData(const char * strToSend, uint16_t byteToSend)
+void UART_lib_sendData(const char * strToSend, uint16_t byteToSend)
 {
 	uint16_t count;
 
@@ -79,7 +81,12 @@ void UART_lib_SendData(const char * strToSend, uint16_t byteToSend)
 	}
 }
 
-int uart_putc(int c)
+/**
+ *
+ * @param c
+ * @return
+ */
+int UART_lib_putc(int c)
 {
   assert_param(IS_USART_123_PERIPH(USARTx));
 
