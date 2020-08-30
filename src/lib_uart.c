@@ -7,9 +7,9 @@
 #include "lib_uart.h"
 #include "stddef.h"
 
-static void USART2_NVIC_Config(void);
+static void USART2_NVIC_Config(t_UART_lib_ uart_to_config);
 
-static FunctionalState _USART_config [t_UART_lib_] = {DISABLE};
+static FunctionalState _USART_config[e_UART_None] = {DISABLE};
 
 /**
  *
@@ -106,7 +106,7 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled)
 		if(irqEnabled == ENABLE)
 		{
 			USART_ITConfig(_usart_to_use, USART_IT_RXNE, ENABLE); /* ENABLE INTERRUPT ON rx */
-			USART2_NVIC_Config();
+			USART2_NVIC_Config(uart_to_config);
 		}
 
 		USART_Cmd(_usart_to_use , ENABLE);
@@ -148,12 +148,46 @@ int UART_lib_putc(int c)
 /**
  *
  */
-static void USART2_NVIC_Config(void)
+static void USART2_NVIC_Config(t_UART_lib_ uart_to_config)
 {
   NVIC_InitTypeDef NVIC_InitStructure;
 
   /* Enable the USARTx Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+  switch(uart_to_config)
+  {
+  	  case e_UART_1:
+  	  {
+  		NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+  	  }
+  	  break;
+  	  case e_UART_2:
+  	  {
+  		NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+  	  }
+  	  break;
+  	  case e_UART_3:
+  	  {
+  		NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+  	  }
+  	  break;
+  	  case e_UART_4:
+  	  {
+  		NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
+  	  }
+  	  break;
+  	  case e_UART_5:
+  	  {
+  		NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
+  	  }
+  	  break;
+  	  default:
+  	  case e_UART_None:
+  	  {
+
+  	  }
+  	break;
+  }
+
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
