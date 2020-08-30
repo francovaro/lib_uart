@@ -4,7 +4,6 @@
  *  Created on: 27/08/2020
  *      Author: franc
  */
-
 #include "lib_uart.h"
 
 static void USART2_NVIC_Config(void);
