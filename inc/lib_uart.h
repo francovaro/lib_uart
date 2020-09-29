@@ -27,7 +27,7 @@ typedef enum
 	e_UART_None
 }t_UART_lib_;
 
-extern ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config,uint8_t irqEnabled);
+extern ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config,uint8_t irqEnabled, uint16_t IT_TO_SET, uint8_t dma_enabled);
 extern void UART_lib_sendData(const char * strToSend, uint16_t byteToSend);
 extern int UART_lib_putc(int c);
 

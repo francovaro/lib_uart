@@ -4,8 +4,8 @@
  *  Created on: 27/08/2020
  *      Author: franc
  */
+#include <stddef.h>
 #include "lib_uart.h"
-#include "stddef.h"
 
 static void USART2_NVIC_Config(t_UART_lib_ uart_to_config);
 
@@ -16,7 +16,7 @@ static FunctionalState _USART_config[e_UART_None] = {DISABLE};
  * @param uart_to_config
  * @param irqEnabled
  */
-ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled)
+ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled, uint16_t IT_TO_SET, uint8_t dma_enabled)
 {
 	ErrorStatus			config = SUCCESS;
 	GPIO_InitTypeDef 	GPIO_InitStruct;
@@ -105,8 +105,13 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled)
 
 		if(irqEnabled == ENABLE)
 		{
-			USART_ITConfig(_usart_to_use, USART_IT_RXNE, ENABLE); /* ENABLE INTERRUPT ON rx */
+			USART_ITConfig(_usart_to_use, IT_TO_SET, ENABLE); /* ENABLE INTERRUPT ON rx */
 			USART2_NVIC_Config(uart_to_config);
+		}
+
+		if (dma_enabled != RESET)
+		{
+			USART_DMACmd(_usart_to_use, dma_enabled, ENABLE);
 		}
 
 		USART_Cmd(_usart_to_use , ENABLE);
@@ -197,13 +202,8 @@ static void USART2_NVIC_Config(t_UART_lib_ uart_to_config)
 /**
  *
  */
-void USART2_IRQHandler(void)
+__attribute__((weak)) void USART2_IRQHandler(void)
 {
-	 /*
-	  * TODO
-	  * handle request from PC !
-	  */
-
 	 if( USART_GetITStatus(USART2,USART_IT_RXNE ) != RESET)
 	 {
 		usart_rxBuffer[usart_nrOfByte] = USART_ReceiveData(USART2);
