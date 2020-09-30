@@ -123,7 +123,7 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled, uint
 /**
  *
  */
-void UART_lib_sendData(const char * strToSend, uint16_t byteToSend)
+void UART_lib_sendData(int8_t * strToSend, uint16_t byteToSend)
 {
 	uint16_t count;
 
