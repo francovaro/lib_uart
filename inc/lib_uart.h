@@ -8,7 +8,7 @@
 #ifndef _LIB_UART_H_
 #define _LIB_UART_H_
 
-#include "stm32f4xx_usart.h"
+#include "stm32f4xx.h"
 
 #define USART_MAX_BUFFER (255u)
 

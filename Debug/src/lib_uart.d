@@ -1,6 +1,5 @@
 src/lib_uart.o: ../src/lib_uart.c \
  C:/work/workspace_stm/lib_uart/inc/lib_uart.h \
- C:/work/workspace_stm/nucleo-f446re_stdperiph_lib/StdPeriph_Driver/inc/stm32f4xx_usart.h \
  C:/work/workspace_stm/nucleo-f446re_stdperiph_lib/CMSIS/device/stm32f4xx.h \
  C:/work/workspace_stm/nucleo-f446re_stdperiph_lib/CMSIS/core/core_cm4.h \
  C:/work/workspace_stm/nucleo-f446re_stdperiph_lib/CMSIS/core/core_cmInstr.h \
@@ -42,8 +41,6 @@ src/lib_uart.o: ../src/lib_uart.c \
  C:/work/workspace_stm/nucleo-f446re_stdperiph_lib/StdPeriph_Driver/inc/stm32f4xx_cec.h
 
 C:/work/workspace_stm/lib_uart/inc/lib_uart.h:
-
-C:/work/workspace_stm/nucleo-f446re_stdperiph_lib/StdPeriph_Driver/inc/stm32f4xx_usart.h:
 
 C:/work/workspace_stm/nucleo-f446re_stdperiph_lib/CMSIS/device/stm32f4xx.h:
 
