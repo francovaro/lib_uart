@@ -10,7 +10,7 @@
 static void USART2_NVIC_Config(t_UART_lib_ uart_to_config);
 
 static FunctionalState 			_USART_config[e_UART_None] = {DISABLE};
-static const USART_TypeDef*		_usart[] = {USART1, USART2, USART3, UART4, UART5};
+static USART_TypeDef*		_usart[] = {USART1, USART2, USART3, UART4, UART5};
 
 /**
  *
@@ -22,7 +22,6 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled, uint
 	ErrorStatus			config = SUCCESS;
 	GPIO_InitTypeDef 	GPIO_InitStruct;
 	USART_InitTypeDef 	USART_InitStructure;
-	USART_TypeDef*		_usart_to_use = NULL;
 
 	usart_serialReceived = 0;
 	usart_nrOfByte = 0;
@@ -56,8 +55,6 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled, uint
 
 				// Initialize USART2_Tx
 				GPIO_InitStruct.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_3;
-
-				_usart_to_use = (USART_TypeDef *)USART2;
 			}
 			break;
 			case e_UART_3:
@@ -102,20 +99,21 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled, uint
 		USART_InitStructure.USART_Parity = USART_Parity_No;
 		USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 		USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-		USART_Init(_usart_to_use ,&USART_InitStructure);
+		USART_Init(_usart[uart_to_config] ,&USART_InitStructure);
 
 		if(irqEnabled == ENABLE)
 		{
-			USART_ITConfig(_usart_to_use, IT_TO_SET, ENABLE); /* ENABLE INTERRUPT ON rx */
+			USART_ITConfig(_usart[uart_to_config], IT_TO_SET, ENABLE); /* ENABLE INTERRUPT ON rx */
 			USART2_NVIC_Config(uart_to_config);
 		}
 
 		if (dma_enabled != RESET)
 		{
-			USART_DMACmd(_usart_to_use, dma_enabled, ENABLE);
+			USART_DMACmd(_usart[uart_to_config], dma_enabled, ENABLE);
 		}
 
-		USART_Cmd(_usart_to_use , ENABLE);
+		USART_Cmd(_usart[uart_to_config] , ENABLE);
+		_USART_config[uart_to_config] = ENABLE;
 	}
 
 	return config;
