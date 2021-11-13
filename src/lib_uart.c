@@ -9,7 +9,8 @@
 
 static void USART2_NVIC_Config(t_UART_lib_ uart_to_config);
 
-static FunctionalState _USART_config[e_UART_None] = {DISABLE};
+static FunctionalState 			_USART_config[e_UART_None] = {DISABLE};
+static const USART_TypeDef*		_usart[] = {USART1, USART2, USART3, UART4, UART5};
 
 /**
  *
@@ -123,15 +124,18 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled, uint
 /**
  *
  */
-void UART_lib_sendData(char * strToSend, uint16_t byteToSend)
+void UART_lib_sendData(t_UART_lib_ sel_uart, char * strToSend, uint16_t byteToSend)
 {
 	uint16_t count;
 
-	for(count = 0 ; count < byteToSend ; count++)
+	if (_USART_config[sel_uart] == ENABLE)
 	{
-		while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
-		USART_SendData(USART2, *strToSend++);
+		for(count = 0 ; count < byteToSend ; count++)
+		{
+			while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
+			USART_SendData((USART_TypeDef*)_usart[sel_uart], *strToSend++);
 
+		}
 	}
 }
 
