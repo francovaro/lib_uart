@@ -48,8 +48,6 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled, uint
 				RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 				RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
-				// rx PA10
-				// tx PA9
 				GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);
 				GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_USART2);
 
@@ -121,6 +119,9 @@ ErrorStatus UART_lib_config(t_UART_lib_ uart_to_config, uint8_t irqEnabled, uint
 
 /**
  *
+ * @param sel_uart
+ * @param strToSend
+ * @param byteToSend
  */
 void UART_lib_sendData(t_UART_lib_ sel_uart, char * strToSend, uint16_t byteToSend)
 {
@@ -129,6 +130,27 @@ void UART_lib_sendData(t_UART_lib_ sel_uart, char * strToSend, uint16_t byteToSe
 	if (_USART_config[sel_uart] == ENABLE)
 	{
 		for(count = 0 ; count < byteToSend ; count++)
+		{
+			while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
+			USART_SendData((USART_TypeDef*)_usart[sel_uart], *strToSend++);
+
+		}
+	}
+}
+
+/**
+ *
+ * @param sel_uart
+ * @param strToSend
+ */
+void UART_lib_free_send(t_UART_lib_ sel_uart, char * strToSend)
+{
+	uint16_t count;
+
+	if (_USART_config[sel_uart] == ENABLE)
+	{
+		while((*strToSend != '\0')
+				&& (count++ < 0xffff))	/* give a max amount */
 		{
 			while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
 			USART_SendData((USART_TypeDef*)_usart[sel_uart], *strToSend++);
